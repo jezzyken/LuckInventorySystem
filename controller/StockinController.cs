@@ -84,14 +84,61 @@ namespace LuckInventorySystem_v2.controller
         }
 
 
-        public void getTotalStocks(int item_id)
+        public Boolean update()
+        {
+            string qryStringMember;
+
+            qryStringMember = "UPDATE tbl_stockin set " +
+                              "quantity_added=@quantity_added " + "WHERE stockin_id=@stockin_id";
+            try
+            {
+                Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+                Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+                Connect.CnSql.Open();
+                Connect.CmSql = new MySqlCommand(qryStringMember, Connect.CnSql);
+                Connect.CmSql.Parameters.AddWithValue("@quantity_added", QuantityAdded);
+                Connect.CmSql.Parameters.AddWithValue("@stockin_id", StockinId);
+
+                Trans = Connect.CnSql.BeginTransaction();
+                Connect.CmSql.Transaction = Trans;
+                Connect.CmSql.ExecuteNonQuery();
+                Trans.Commit();
+                return true;
+
+            }
+
+            catch (MySqlException e)
+            {
+                XtraMessageBox.Show(e.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(ex.Message, "General Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+
+            }
+            finally
+            {
+                Connect.CnSql.Close();
+                Connect.CnSql.Dispose();
+                Connect.CmSql.Dispose();
+                Connect.CmSql = null;
+                Connect.DrSql = null;
+            }
+
+            return false;
+        }
+
+
+        public void getTotalStocks(string item_id)
         {
             int x = 0;
 
             Connect.CnSql = new MySqlConnection(Connect.ConnStr);
             Connect.CnSql.Open();
 
-            String qryStr = "Select sum(quantity_added) as total from tbl_supplier where item_id = '" + item_id + "'";
+            String qryStr = "Select sum(quantity_added) as total from tbl_stockin where item_id = '" + item_id + "'";
 
             Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
             Connect.DrSql = Connect.CmSql.ExecuteReader();
@@ -101,7 +148,6 @@ namespace LuckInventorySystem_v2.controller
                 try
                 {
                     TotalStocks = Connect.DrSql.GetInt32("total");
-
                 }
                 catch (SqlNullValueException e)
                 {

@@ -49,12 +49,13 @@ namespace LuckInventorySystem_v2.controller
         {
             string qryStringMember;
 
-            qryStringMember = "Insert into tbl_item (item_name, category, model, brand, selling_price, wholesale_price, description, item_note, date_added, supplier_id) VALUES (@item_name, @category, @model, @brand, @selling_price, @wholesale_price, @description, @item_note, NOW(), @supplier_id)";
+            qryStringMember = "Insert into tbl_item (item_id, item_name, category, model, brand, selling_price, wholesale_price, description, item_note, date_added, supplier_id) VALUES (@item_id, @item_name, @category, @model, @brand, @selling_price, @wholesale_price, @description, @item_note, NOW(), @supplier_id)";
 
             try
             {
                 Connect.CnSql = new MySqlConnection(Connect.ConnStr);
                 Connect.CnSql.Open(); Connect.CmSql = new MySqlCommand(qryStringMember, Connect.CnSql);
+                Connect.CmSql.Parameters.AddWithValue("@item_id", ItemId.Trim());
                 Connect.CmSql.Parameters.AddWithValue("@item_name", ItemName.Trim());
                 Connect.CmSql.Parameters.AddWithValue("@category", Category.Trim());
                 Connect.CmSql.Parameters.AddWithValue("@model", Model.Trim());
@@ -102,14 +103,18 @@ namespace LuckInventorySystem_v2.controller
 
             String qryStr = "Select * from item_view";
 
-            Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql); Connect.DrSql = Connect.CmSql.ExecuteReader();
-            LsvItem.Items.Clear(); while (Connect.DrSql.Read())
+            Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
+            Connect.DrSql = Connect.CmSql.ExecuteReader();
+            LsvItem.Items.Clear();
+
+            while (Connect.DrSql.Read())
             {
                 try
                 {
-                    ListViewItem lvi = new ListViewItem(Connect.DrSql.GetInt64("item_id").ToString());
+                    ListViewItem lvi = new ListViewItem(Connect.DrSql.GetString("item_id"));
                     lvi.SubItems.Add(Connect.DrSql.GetString("item_name").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("supplier_name").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("stocks").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("category").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("brand").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("model").Trim());
@@ -119,16 +124,28 @@ namespace LuckInventorySystem_v2.controller
                     lvi.SubItems.Add(Connect.DrSql.GetString("item_note").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("date_added").Trim());
 
-                    if (x % 2 == 1) lvi.BackColor = Color.MintCream;
+                    Stocks = Connect.DrSql.GetInt32("stocks");
+
+                    if (Stocks == 0)
+                    {
+                        lvi.ForeColor = Color.Red;
+                    }
+
+                    if (x%2 == 1)
+                    {
+                        lvi.BackColor = Color.MintCream;
+                    }
                     else
                     {
                         lvi.BackColor = Color.White;
                     }
+
                     x++;
                     LsvItem.Items.Add(lvi);
                 }
                 catch (SqlNullValueException e)
                 {
+
                 }
             }
             Connect.CnSql.Close();
@@ -139,6 +156,66 @@ namespace LuckInventorySystem_v2.controller
             Connect.DrSql = null;
 
         }
+
+
+        public void displayStocks()
+        {
+            int x = 0;
+            Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+
+            Connect.CnSql.Open();
+
+            String qryStr = "Select * from stocks_view";
+
+            Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
+            Connect.DrSql = Connect.CmSql.ExecuteReader();
+            LsvPurchases.Items.Clear();
+
+            while (Connect.DrSql.Read())
+            {
+                try
+                {
+                    ListViewItem lvi = new ListViewItem(Connect.DrSql.GetInt64("stockin_id").ToString());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("item_name").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("supplier_name").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("quantity_added").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("category").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("brand").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("model").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("selling_price").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("wholesale_price").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("description").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("item_note").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("date_added").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("item_id").Trim());
+
+
+                    if (x % 2 == 1)
+                    {
+                        lvi.BackColor = Color.MintCream;
+                    }
+                    else
+                    {
+                        lvi.BackColor = Color.White;
+                    }
+
+                    x++;
+                    LsvPurchases.Items.Add(lvi);
+                }
+                catch (SqlNullValueException e)
+                {
+
+                }
+            }
+            Connect.CnSql.Close();
+            Connect.CnSql.Dispose();
+            Connect.CmSql.Dispose();
+            Connect.CmSql = null;
+            Connect.DrSql.Dispose();
+            Connect.DrSql = null;
+
+        }
+
 
         public Boolean update()
         {
@@ -216,7 +293,7 @@ namespace LuckInventorySystem_v2.controller
             {
                 try
                 {
-                    ItemId = Connect.DrSql.GetInt32("item_id");
+                    ItemId = Connect.DrSql.GetString("item_id");
 
                 }
                 catch (SqlNullValueException e)
@@ -233,6 +310,122 @@ namespace LuckInventorySystem_v2.controller
             Connect.DrSql = null;
 
         }
+
+        public void getAvailableStocks(string item_id)
+        {
+            int x = 0;
+
+            Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+            Connect.CnSql.Open();
+
+            String qryStr = "Select stocks from tbl_item where item_id = '" + item_id + "'";
+
+            Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
+            Connect.DrSql = Connect.CmSql.ExecuteReader();
+
+            while (Connect.DrSql.Read())
+            {
+                try
+                {
+                    Stocks = Connect.DrSql.GetInt32("stocks");
+
+                }
+                catch (SqlNullValueException e)
+                {
+
+                }
+            }
+
+            Connect.CnSql.Close();
+            Connect.CnSql.Dispose();
+            Connect.CmSql.Dispose();
+            Connect.CmSql = null;
+            Connect.DrSql.Dispose();
+            Connect.DrSql = null;
+
+        }
+
+        public Boolean updateStocks()
+        {
+            string qryStringMember;
+
+            qryStringMember = "UPDATE tbl_item set " +
+                              "stocks=@stocks " + "WHERE item_id=@item_id";
+            try
+            {
+                Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+                Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+                Connect.CnSql.Open();
+                Connect.CmSql = new MySqlCommand(qryStringMember, Connect.CnSql);
+                Connect.CmSql.Parameters.AddWithValue("@stocks", Stocks);
+                Connect.CmSql.Parameters.AddWithValue("@item_id", ItemId);
+
+                Trans = Connect.CnSql.BeginTransaction();
+                Connect.CmSql.Transaction = Trans;
+                Connect.CmSql.ExecuteNonQuery();
+                Trans.Commit();
+                return true;
+
+            }
+
+            catch (MySqlException e)
+            {
+                XtraMessageBox.Show(e.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(ex.Message, "General Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+
+            }
+            finally
+            {
+                Connect.CnSql.Close();
+                Connect.CnSql.Dispose();
+                Connect.CmSql.Dispose();
+                Connect.CmSql = null;
+                Connect.DrSql = null;
+            }
+
+            return false;
+        }
+
+
+        public void checkItem(string item_id)
+        {
+            int x = 0;
+
+            Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+            Connect.CnSql.Open();
+
+            String qryStr = "Select count(*) as Record from tbl_item_stocks where item_id  = '" + item_id + "'";
+
+            Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
+            Connect.DrSql = Connect.CmSql.ExecuteReader();
+
+            while (Connect.DrSql.Read())
+            {
+                try
+                {
+                    CheckItem = Connect.DrSql.GetInt32("Record");
+
+                }
+                catch (SqlNullValueException e)
+                {
+
+                }
+            }
+
+            Connect.CnSql.Close();
+            Connect.CnSql.Dispose();
+            Connect.CmSql.Dispose();
+            Connect.CmSql = null;
+            Connect.DrSql.Dispose();
+            Connect.DrSql = null;
+
+        }
+
 
     }
 }

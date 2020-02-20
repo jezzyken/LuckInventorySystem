@@ -46,5 +46,11 @@ namespace LuckInventorySystem_v2
             mainPanel.Controls.Clear();
             mainPanel.Controls.Add(new ctrUsers());
         }
+
+        private void btnReports_Click(object sender, EventArgs e)
+        {
+            mainPanel.Controls.Clear();
+            mainPanel.Controls.Add(new ctrReports());
+        }
     }
 }

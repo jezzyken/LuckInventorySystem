@@ -9,7 +9,7 @@ namespace LuckInventorySystem_v2.model
     class StockinModel
     {
         private int stockin_id;
-        private int item_id;
+        private string item_id;
         private int quantity_added;
         private int isDeleted;
         private int totalStocks;
@@ -26,7 +26,7 @@ namespace LuckInventorySystem_v2.model
             set { isDeleted = value; }
         }
 
-        public int ItemId
+        public string ItemId
         {
             get { return item_id; }
             set { item_id = value; }

@@ -15,16 +15,22 @@ namespace LuckInventorySystem_v2
     {
 
         private StockinController _stockinController = StockinController.GetInstance;
+        ItemController _itemController = ItemController.GetInstance;
 
-        private int item_id;
+        private string item_id;
         private string item_name;
+        private int total_remaining_stocks;
 
-        public frmStocks(int item_id, string item_name)
+        public frmStocks(string item_id, string item_name, int total_stocks)
         {
+
             InitializeComponent();
             this.item_id = item_id;
             this.item_name = item_name;
             txtItemName.Text = item_name;
+
+            txtTotalStocks.Text = total_stocks.ToString();
+
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -34,9 +40,17 @@ namespace LuckInventorySystem_v2
 
         private void btnAddStocks_Click(object sender, EventArgs e)
         {
+
             _stockinController.ItemId = item_id;
             _stockinController.QuantityAdded = int.Parse(txtQuantity.Text);
             _stockinController.add();
+            total_remaining_stocks = int.Parse(txtQuantity.Text) + int.Parse(txtTotalStocks.Text);
+
+            _itemController.ItemId = item_id;
+            _itemController.Stocks = total_remaining_stocks;
+            _itemController.updateStocks();
+            _itemController.display();
+
         }
     }
 }

@@ -36,7 +36,7 @@
             this.btnAddStocks = new System.Windows.Forms.Button();
             this.txtItemName = new Bunifu.Framework.UI.BunifuCustomLabel();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtTotalStocks = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtQuantity)).BeginInit();
             this.panel1.SuspendLayout();
@@ -44,7 +44,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.txtTotalStocks);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.txtQuantity);
             this.groupBox1.Controls.Add(this.label5);
@@ -108,10 +108,10 @@
             // txtItemName
             // 
             this.txtItemName.AutoSize = true;
-            this.txtItemName.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtItemName.Location = new System.Drawing.Point(12, 57);
+            this.txtItemName.Font = new System.Drawing.Font("Century Gothic", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtItemName.Location = new System.Drawing.Point(12, 54);
             this.txtItemName.Name = "txtItemName";
-            this.txtItemName.Size = new System.Drawing.Size(96, 19);
+            this.txtItemName.Size = new System.Drawing.Size(126, 25);
             this.txtItemName.TabIndex = 5;
             this.txtItemName.Text = "Item Name";
             // 
@@ -125,16 +125,16 @@
             this.label2.TabIndex = 17;
             this.label2.Text = "Stocks Available";
             // 
-            // textBox1
+            // txtTotalStocks
             // 
-            this.textBox1.Font = new System.Drawing.Font("Century Gothic", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(62, 55);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(158, 43);
-            this.textBox1.TabIndex = 18;
-            this.textBox1.Text = "200";
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTotalStocks.Font = new System.Drawing.Font("Century Gothic", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTotalStocks.Location = new System.Drawing.Point(62, 55);
+            this.txtTotalStocks.Name = "txtTotalStocks";
+            this.txtTotalStocks.ReadOnly = true;
+            this.txtTotalStocks.Size = new System.Drawing.Size(158, 43);
+            this.txtTotalStocks.TabIndex = 18;
+            this.txtTotalStocks.Text = "200";
+            this.txtTotalStocks.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // frmStocks
             // 
@@ -171,6 +171,6 @@
         private System.Windows.Forms.Button btnAddStocks;
         private Bunifu.Framework.UI.BunifuCustomLabel txtItemName;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtTotalStocks;
     }
 }

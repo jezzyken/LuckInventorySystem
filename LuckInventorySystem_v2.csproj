@@ -33,12 +33,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AxShockwaveFlashObjects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="Bunifu.Core, Version=1.11.5.1, Culture=neutral, PublicKeyToken=e8e24ccd28363fe9, processorArchitecture=MSIL" />
     <Reference Include="Bunifu.UI.WinForm.BunifuShadowPanel">
       <HintPath>..\..\..\..\..\Desktop\Bunifu UI WinForms 1.11.5.1\Bunifu.UI.WinForm.BunifuShadowPanel.dll</HintPath>
     </Reference>
     <Reference Include="Bunifu.UI.WinForms.BunifuButton">
       <HintPath>..\..\..\..\..\Desktop\Bunifu UI WinForms 1.11.5.1\Bunifu.UI.WinForms.BunifuButton.dll</HintPath>
+    </Reference>
+    <Reference Include="Bunifu.UI.WinForms.BunifuDatePicker">
+      <HintPath>..\..\..\..\..\Desktop\Bunifu UI WinForms 1.11.5.1\Bunifu.UI.WinForms.BunifuDatePicker.dll</HintPath>
     </Reference>
     <Reference Include="Bunifu.UI.WinForms.BunifuImageButton">
       <HintPath>..\..\..\..\..\Desktop\Bunifu UI WinForms 1.11.5.1\Bunifu.UI.WinForms.BunifuImageButton.dll</HintPath>
@@ -55,6 +59,10 @@
     <Reference Include="Bunifu_UI_v1.5.3">
       <HintPath>..\..\..\..\..\Desktop\Bunifu UI WinForms 1.11.5.1\Bunifu_UI_v1.5.3.dll</HintPath>
     </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Data.v16.2, Version=16.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Diagram.v16.2.Core, Version=16.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v16.2.Core, Version=16.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -76,6 +84,8 @@
     <Reference Include="System.Design" />
     <Reference Include="System.Management" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -89,6 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="controller\ItemController.cs" />
+    <Compile Include="controller\ItemStockControler.cs" />
+    <Compile Include="controller\OrderController.cs" />
+    <Compile Include="controller\SalesController.cs" />
     <Compile Include="controller\StockinController.cs" />
     <Compile Include="controller\SupplierController.cs" />
     <Compile Include="controller\UserController.cs" />
@@ -98,11 +111,29 @@
     <Compile Include="ctrInventory.Designer.cs">
       <DependentUpon>ctrInventory.cs</DependentUpon>
     </Compile>
+    <Compile Include="ctrItemReport.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctrItemReport.Designer.cs">
+      <DependentUpon>ctrItemReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="ctrItems.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ctrItems.Designer.cs">
       <DependentUpon>ctrItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ctrReports.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctrReports.Designer.cs">
+      <DependentUpon>ctrReports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ctrSales.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctrSales.Designer.cs">
+      <DependentUpon>ctrSales.cs</DependentUpon>
     </Compile>
     <Compile Include="ctrStocks.cs">
       <SubType>UserControl</SubType>
@@ -123,23 +154,47 @@
       <DependentUpon>ctrUsers.cs</DependentUpon>
     </Compile>
     <Compile Include="db\dbConnection.cs" />
+    <Compile Include="frmExchange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExchange.Designer.cs">
+      <DependentUpon>frmExchange.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmNewOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNewOrder.Designer.cs">
+      <DependentUpon>frmNewOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmOrders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOrders.Designer.cs">
+      <DependentUpon>frmOrders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPOS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPOS.Designer.cs">
+      <DependentUpon>frmPOS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReceipt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReceipt.Designer.cs">
+      <DependentUpon>frmReceipt.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmStocks.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmStocks.Designer.cs">
       <DependentUpon>frmStocks.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmSupplier.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmSupplier.Designer.cs">
-      <DependentUpon>frmSupplier.cs</DependentUpon>
     </Compile>
     <Compile Include="frmUpdateStocks.cs">
       <SubType>Form</SubType>
@@ -148,16 +203,52 @@
       <DependentUpon>frmUpdateStocks.cs</DependentUpon>
     </Compile>
     <Compile Include="model\ItemModel.cs" />
+    <Compile Include="model\ItemStockModel.cs" />
+    <Compile Include="model\OrderModel.cs" />
+    <Compile Include="model\SalesModel.cs" />
     <Compile Include="model\StockinModel.cs" />
     <Compile Include="model\SupplierModel.cs" />
     <Compile Include="model\UserModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="rptItems.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptItems.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rptReciept.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptReciept.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rptSales.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSales.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rptStocks.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptStocks.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="ctrInventory.resx">
       <DependentUpon>ctrInventory.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ctrItemReport.resx">
+      <DependentUpon>ctrItemReport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ctrItems.resx">
       <DependentUpon>ctrItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctrReports.resx">
+      <DependentUpon>ctrReports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctrSales.resx">
+      <DependentUpon>ctrSales.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ctrStocks.resx">
       <DependentUpon>ctrStocks.cs</DependentUpon>
@@ -168,14 +259,26 @@
     <EmbeddedResource Include="ctrUsers.resx">
       <DependentUpon>ctrUsers.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmExchange.resx">
+      <DependentUpon>frmExchange.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmNewOrder.resx">
+      <DependentUpon>frmNewOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOrders.resx">
+      <DependentUpon>frmOrders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPOS.resx">
+      <DependentUpon>frmPOS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReceipt.resx">
+      <DependentUpon>frmReceipt.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmStocks.resx">
       <DependentUpon>frmStocks.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmSupplier.resx">
-      <DependentUpon>frmSupplier.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmUpdateStocks.resx">
       <DependentUpon>frmUpdateStocks.cs</DependentUpon>
@@ -190,6 +293,22 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="rptItems.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptItems.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rptReciept.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptReciept.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rptSales.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSales.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rptStocks.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptStocks.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -202,6 +321,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

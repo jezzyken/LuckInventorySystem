@@ -8,10 +8,17 @@ namespace LuckInventorySystem_v2.model
 {
     class ItemStockModel
     {
-        private int item_id;
+        private string item_id;
         private int remaining_stocks;
+        private int check_item;
 
-        public int ItemId
+        public int CheckItem
+        {
+            get { return check_item; }
+            set { check_item = value; }
+        }
+
+        public string ItemId
         {
             get { return item_id; }
             set { item_id = value; }

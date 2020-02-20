@@ -9,7 +9,7 @@ namespace LuckInventorySystem_v2.model
 {
     class ItemModel
     {
-        private int item_id;
+        private string item_id;
         private string category;
         private string item_name;
         private string model;
@@ -19,15 +19,32 @@ namespace LuckInventorySystem_v2.model
         private string description;
         private string item_note;
         private int isDeleted;
+        private int stocks;
+        private int check_item;
         private ListView lsvItem;
+        private ListView lsvPurchases;
+
 
 
         private int supplier_id;
 
-        public int ItemId
+        public string ItemId
         {
             get { return item_id; }
             set { item_id = value; }
+        }
+
+
+        public int CheckItem
+        {
+            get { return check_item; }
+            set { check_item = value; }
+        }
+
+        public int Stocks
+        {
+            get { return stocks; }
+            set { stocks = value; }
         }
 
         public int SupplierId
@@ -77,6 +94,12 @@ namespace LuckInventorySystem_v2.model
         {
             get { return lsvItem; }
             set { lsvItem = value; }
+        }
+
+        public ListView LsvPurchases
+        {
+            get { return lsvPurchases; }
+            set { lsvPurchases = value; }
         }
 
         public string Model

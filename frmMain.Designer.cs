@@ -32,8 +32,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.bunifuImageButton6 = new Bunifu.Framework.UI.BunifuImageButton();
-            this.bunifuImageButton5 = new Bunifu.Framework.UI.BunifuImageButton();
+            this.btnReports = new Bunifu.Framework.UI.BunifuImageButton();
+            this.btnLogs = new Bunifu.Framework.UI.BunifuImageButton();
             this.frmUsers = new Bunifu.Framework.UI.BunifuImageButton();
             this.btnSupplier = new Bunifu.Framework.UI.BunifuImageButton();
             this.btnItems = new Bunifu.Framework.UI.BunifuImageButton();
@@ -45,8 +45,8 @@
             this.panel1.SuspendLayout();
             this.panel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bunifuImageButton6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bunifuImageButton5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnReports)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnLogs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.frmUsers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnSupplier)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnItems)).BeginInit();
@@ -58,8 +58,8 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.Controls.Add(this.panel6);
-            this.panel1.Controls.Add(this.bunifuImageButton6);
-            this.panel1.Controls.Add(this.bunifuImageButton5);
+            this.panel1.Controls.Add(this.btnReports);
+            this.panel1.Controls.Add(this.btnLogs);
             this.panel1.Controls.Add(this.frmUsers);
             this.panel1.Controls.Add(this.btnSupplier);
             this.panel1.Controls.Add(this.btnItems);
@@ -90,29 +90,30 @@
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
-            // bunifuImageButton6
+            // btnReports
             // 
-            this.bunifuImageButton6.Image = ((System.Drawing.Image)(resources.GetObject("bunifuImageButton6.Image")));
-            this.bunifuImageButton6.ImageActive = null;
-            this.bunifuImageButton6.Location = new System.Drawing.Point(12, 560);
-            this.bunifuImageButton6.Name = "bunifuImageButton6";
-            this.bunifuImageButton6.Size = new System.Drawing.Size(71, 71);
-            this.bunifuImageButton6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.bunifuImageButton6.TabIndex = 5;
-            this.bunifuImageButton6.TabStop = false;
-            this.bunifuImageButton6.Zoom = 10;
+            this.btnReports.Image = ((System.Drawing.Image)(resources.GetObject("btnReports.Image")));
+            this.btnReports.ImageActive = null;
+            this.btnReports.Location = new System.Drawing.Point(12, 560);
+            this.btnReports.Name = "btnReports";
+            this.btnReports.Size = new System.Drawing.Size(71, 71);
+            this.btnReports.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnReports.TabIndex = 5;
+            this.btnReports.TabStop = false;
+            this.btnReports.Zoom = 10;
+            this.btnReports.Click += new System.EventHandler(this.btnReports_Click);
             // 
-            // bunifuImageButton5
+            // btnLogs
             // 
-            this.bunifuImageButton5.Image = ((System.Drawing.Image)(resources.GetObject("bunifuImageButton5.Image")));
-            this.bunifuImageButton5.ImageActive = null;
-            this.bunifuImageButton5.Location = new System.Drawing.Point(12, 483);
-            this.bunifuImageButton5.Name = "bunifuImageButton5";
-            this.bunifuImageButton5.Size = new System.Drawing.Size(71, 71);
-            this.bunifuImageButton5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.bunifuImageButton5.TabIndex = 4;
-            this.bunifuImageButton5.TabStop = false;
-            this.bunifuImageButton5.Zoom = 10;
+            this.btnLogs.Image = ((System.Drawing.Image)(resources.GetObject("btnLogs.Image")));
+            this.btnLogs.ImageActive = null;
+            this.btnLogs.Location = new System.Drawing.Point(12, 483);
+            this.btnLogs.Name = "btnLogs";
+            this.btnLogs.Size = new System.Drawing.Size(71, 71);
+            this.btnLogs.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnLogs.TabIndex = 4;
+            this.btnLogs.TabStop = false;
+            this.btnLogs.Zoom = 10;
             // 
             // frmUsers
             // 
@@ -221,8 +222,8 @@
             this.panel1.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bunifuImageButton6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bunifuImageButton5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnReports)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnLogs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.frmUsers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnSupplier)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnItems)).EndInit();
@@ -239,12 +240,12 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel mainPanel;
         private System.Windows.Forms.Panel panel4;
-        private Bunifu.Framework.UI.BunifuImageButton bunifuImageButton5;
+        private Bunifu.Framework.UI.BunifuImageButton btnLogs;
         private Bunifu.Framework.UI.BunifuImageButton frmUsers;
         private Bunifu.Framework.UI.BunifuImageButton btnSupplier;
         private Bunifu.Framework.UI.BunifuImageButton btnItems;
         private Bunifu.Framework.UI.BunifuImageButton btnInventory;
-        private Bunifu.Framework.UI.BunifuImageButton bunifuImageButton6;
+        private Bunifu.Framework.UI.BunifuImageButton btnReports;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel6;
     }
