@@ -20,7 +20,18 @@ namespace LuckInventorySystem_v2.model
         private string store_representative;
         private int quantity;
         private ListView lsvOrder;
+        private ListView lsvOrderList;
+        private ListView lsvCancelled;
+
         private int user_id;
+
+        private int count;
+
+        public int Count
+        {
+            get { return count; }
+            set { count = value; }
+        }
 
         public int UserId
         {
@@ -39,8 +50,6 @@ namespace LuckInventorySystem_v2.model
             get { return quantity; }
             set { quantity = value; }
         }
-
-
 
         public string ContactNo
         {
@@ -65,6 +74,19 @@ namespace LuckInventorySystem_v2.model
             get { return lsvOrder; }
             set { lsvOrder = value; }
         }
+
+        public ListView LsvCancelled
+        {
+            get { return lsvCancelled; }
+            set { lsvCancelled = value; }
+        }
+
+        public ListView LsvOrderList
+        {
+            get { return lsvOrderList; }
+            set { lsvOrderList = value; }
+        }
+
 
         public int OrderId
         {

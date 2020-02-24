@@ -17,9 +17,25 @@ namespace LuckInventorySystem_v2.model
         private string address;
         private int isDeleted;
         private ListView lsvSupplier;
-
-      
+        private ListView lsvSupplierArchived;
         private ComboBox cbo_supplier_name;
+        private int count;
+        private int user_id;
+
+
+        public int UserId
+        {
+            get { return user_id; }
+            set { user_id = value; }
+        }
+
+
+        public int Count
+        {
+            get { return count; }
+            set { count = value; }
+        }
+
 
         public ComboBox CboSupplierName
         {
@@ -62,6 +78,12 @@ namespace LuckInventorySystem_v2.model
         {
             get { return lsvSupplier; }
             set { lsvSupplier = value; }
+        }
+
+        public ListView LsvSupplierArchived
+        {
+            get { return lsvSupplierArchived; }
+            set { lsvSupplierArchived = value; }
         }
 
         public int SupplierId

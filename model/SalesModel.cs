@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace LuckInventorySystem_v2.model
 {
@@ -14,6 +15,14 @@ namespace LuckInventorySystem_v2.model
         private double discount;
         private string tranx_no;
         private int user_id;
+
+        private ListView lsvSales;
+
+        public ListView LsvSales
+        {
+            get { return lsvSales; }
+            set { lsvSales = value; }
+        }
 
         public double Discount
         {

@@ -23,17 +23,28 @@ namespace LuckInventorySystem_v2.model
         private int check_item;
         private ListView lsvItem;
         private ListView lsvPurchases;
-
-
-
+        private ListView lsvArchivedItems;
         private int supplier_id;
+        private int count;
+        private int user_id;
+
+        public int UserId
+        {
+            get { return user_id; }
+            set { user_id = value; }
+        }
+
+        public int Count
+        {
+            get { return count; }
+            set { count = value; }
+        }
 
         public string ItemId
         {
             get { return item_id; }
             set { item_id = value; }
         }
-
 
         public int CheckItem
         {
@@ -94,6 +105,12 @@ namespace LuckInventorySystem_v2.model
         {
             get { return lsvItem; }
             set { lsvItem = value; }
+        }
+
+        public ListView LsvAarchivedItems
+        {
+            get { return lsvArchivedItems; }
+            set { lsvArchivedItems = value; }
         }
 
         public ListView LsvPurchases

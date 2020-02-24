@@ -18,6 +18,7 @@ namespace LuckInventorySystem_v2.model
         private string password;
         private string user_level;
         private ListView lsvUser;
+        private ListView lsvUserAchived;
         private PictureEdit user_image;
         private int isDeleted;
 
@@ -55,6 +56,12 @@ namespace LuckInventorySystem_v2.model
         {
             get { return lsvUser; }
             set { lsvUser = value; }
+        }
+
+        public ListView LsvUserAchived
+        {
+            get { return lsvUserAchived; }
+            set { lsvUserAchived = value; }
         }
 
         public string Name

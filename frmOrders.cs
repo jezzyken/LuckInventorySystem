@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 using LuckInventorySystem_v2.controller;
 
 namespace LuckInventorySystem_v2
@@ -57,10 +58,10 @@ namespace LuckInventorySystem_v2
             LsvOrder.Columns.Add("Order Item", 200, HorizontalAlignment.Left);
             LsvOrder.Columns.Add("Additional Info", 300, HorizontalAlignment.Left);
             LsvOrder.Columns.Add("Customer Name", 143, HorizontalAlignment.Left);
+            LsvOrder.Columns.Add("Status", 200, HorizontalAlignment.Left);
             LsvOrder.Columns.Add("Contact No", 143, HorizontalAlignment.Left);
             LsvOrder.Columns.Add("Downpayment", 143, HorizontalAlignment.Left);
             LsvOrder.Columns.Add("Order Price", 143, HorizontalAlignment.Left);
-            LsvOrder.Columns.Add("Status", 200, HorizontalAlignment.Left);
             LsvOrder.Columns.Add("Representative", 143, HorizontalAlignment.Left);
             LsvOrder.Columns.Add("Date Ordered", 200, HorizontalAlignment.Left);
             _orderController.display();
@@ -73,13 +74,14 @@ namespace LuckInventorySystem_v2
             ordered_item = selItem.SubItems[1].Text;
             additional_info = selItem.SubItems[2].Text;
             customer_name = selItem.SubItems[3].Text;
-            contact_no = selItem.SubItems[4].Text;
-            downpayment = double.Parse(selItem.SubItems[5].Text);
-            order_price = double.Parse(selItem.SubItems[6].Text);
-            status = selItem.SubItems[7].Text;
+            status = selItem.SubItems[4].Text;
+            contact_no = selItem.SubItems[5].Text;
+            downpayment = double.Parse(selItem.SubItems[6].Text);
+            order_price = double.Parse(selItem.SubItems[7].Text);
             store_representative = selItem.SubItems[8].Text;
 
             lblStatus.Text = status;
+
 
             if (lblStatus.Text == "Pending")
             {
@@ -103,24 +105,81 @@ namespace LuckInventorySystem_v2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            frmNewOrder newOrder = new frmNewOrder("Update");
-            newOrder.order_id = order_id;
-            newOrder.ordered_item = ordered_item;
-            newOrder.additional_info = additional_info;
-            newOrder.customer_name = customer_name;
-            newOrder.contact_no = contact_no;
-            newOrder.downpayment = downpayment;
-            newOrder.order_price = order_price;
-            newOrder.store_representative = store_representative;
-            newOrder.ShowDialog();
+            if (LsvOrder.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select order to be update");
+            }
+            else
+            {
+                frmNewOrder newOrder = new frmNewOrder("Update");
+                newOrder.order_id = order_id;
+                newOrder.ordered_item = ordered_item;
+                newOrder.additional_info = additional_info;
+                newOrder.customer_name = customer_name;
+                newOrder.contact_no = contact_no;
+                newOrder.downpayment = downpayment;
+                newOrder.order_price = order_price;
+                newOrder.store_representative = store_representative;
+                newOrder.ShowDialog();
+            }
+          
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            _orderController.OrderId = order_id;
-            _orderController.Status = "Ordered";
-            _orderController.updateStatus();
-            _orderController.display();
+
+            if (LsvOrder.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select order to be update");
+            }
+            else
+            {
+                DialogResult dialogResult;
+
+                dialogResult = XtraMessageBox.Show("Do you want to update this order as ORDERED?",
+                   "Updating...",
+                   MessageBoxButtons.OKCancel,
+                   MessageBoxIcon.Question);
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    _orderController.OrderId = order_id;
+                    _orderController.Status = "Ordered";
+                    _orderController.updateStatus();
+                    _orderController.display();
+                    MessageBox.Show("Updated");
+                }
+
+            }
+
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            if (LsvOrder.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select order to be cancelled");
+            }
+            else
+            {
+                DialogResult dialogResult;
+
+                dialogResult = XtraMessageBox.Show("Do you want to cancel this order?",
+                    "Cancelling...",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Question);
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    new frmVerification(order_id, "Order").ShowDialog();
+                }
+            }
+           
+        }
+
+        private void frmOrders_Click(object sender, EventArgs e)
+        {
+            btnNew.Enabled = false;
         }
     }
 }

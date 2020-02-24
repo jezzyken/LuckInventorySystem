@@ -15,9 +15,6 @@ namespace LuckInventorySystem_v2
         public ctrReports()
         {
             InitializeComponent();
-
-            panelReports.Controls.Clear();
-            panelReports.Controls.Add(new ctrSales());
         }
 
         private void btnSales_Click(object sender, EventArgs e)

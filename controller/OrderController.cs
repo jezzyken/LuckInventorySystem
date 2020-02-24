@@ -98,7 +98,7 @@ namespace LuckInventorySystem_v2.controller
 
             Connect.CnSql.Open();
 
-            String qryStr = "Select * from tbl_order";
+            String qryStr = "Select * from tbl_order where status != 'Cancelled' order by date_ordered DESC";
 
             Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
             Connect.DrSql = Connect.CmSql.ExecuteReader();
@@ -112,12 +112,13 @@ namespace LuckInventorySystem_v2.controller
                     lvi.SubItems.Add(Connect.DrSql.GetString("ordered_item").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("additional_info").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("customer_name").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("status").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("contact_no").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("downpayment").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("order_price").Trim());
-                    lvi.SubItems.Add(Connect.DrSql.GetString("status").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("store_representative").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("date_ordered").Trim());
+
 
                     if (x % 2 == 1)
                     {
@@ -130,6 +131,62 @@ namespace LuckInventorySystem_v2.controller
 
                     x++;
                     LsvOrder.Items.Add(lvi);
+                }
+                catch (SqlNullValueException e)
+                {
+
+                }
+            }
+            Connect.CnSql.Close();
+            Connect.CnSql.Dispose();
+            Connect.CmSql.Dispose();
+            Connect.CmSql = null;
+            Connect.DrSql.Dispose();
+            Connect.DrSql = null;
+
+        }
+
+        public void displayOrder()
+        {
+            int x = 0;
+            Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+
+            Connect.CnSql.Open();
+
+            String qryStr = "Select * from view_orders";
+
+            Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
+            Connect.DrSql = Connect.CmSql.ExecuteReader();
+            LsvOrderList.Items.Clear();
+
+            while (Connect.DrSql.Read())
+            {
+                try
+                {
+                    ListViewItem lvi = new ListViewItem(Connect.DrSql.GetString("order_id"));
+                    lvi.SubItems.Add(Connect.DrSql.GetString("ordered_item").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("additional_info").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("customer_name").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("status").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("contact_no").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("downpayment").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("order_price").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("store_representative").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("date_ordered").Trim());
+                   // lvi.SubItems.Add(Connect.DrSql.GetString("name").Trim());
+
+
+                    if (x % 2 == 1)
+                    {
+                        lvi.BackColor = Color.MintCream;
+                    }
+                    else
+                    {
+                        lvi.BackColor = Color.White;
+                    }
+
+                    x++;
+                    LsvOrderList.Items.Add(lvi);
                 }
                 catch (SqlNullValueException e)
                 {
@@ -263,8 +320,8 @@ namespace LuckInventorySystem_v2.controller
                 Connect.CnSql.Open();
                 Connect.CmSql = new MySqlCommand(qryStringMember, Connect.CnSql);
                 Connect.CmSql.Parameters.AddWithValue("@status", Status.Trim());
+                Connect.CmSql.Parameters.AddWithValue("@user_id", UserId);
                 Connect.CmSql.Parameters.AddWithValue("@order_id", OrderId);
-                Connect.CmSql.Parameters.AddWithValue("@user_id", OrderId);
 
                 Trans = Connect.CnSql.BeginTransaction();
                 Connect.CmSql.Transaction = Trans;
@@ -298,7 +355,177 @@ namespace LuckInventorySystem_v2.controller
         }
 
 
+        public void countItem()
+        {
 
+            int x = 0;
+
+            Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+            Connect.CnSql.Open();
+
+            String qryStr = "Select count(*) as NoOfItem from tbl_order where status = 'Ordered'";
+
+            Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
+            Connect.DrSql = Connect.CmSql.ExecuteReader();
+
+            while (Connect.DrSql.Read())
+            {
+                try
+                {
+                    Count = Connect.DrSql.GetInt32("NoOfItem");
+
+                }
+                catch (SqlNullValueException e)
+                {
+
+                }
+            }
+
+            Connect.CnSql.Close();
+            Connect.CnSql.Dispose();
+            Connect.CmSql.Dispose();
+            Connect.CmSql = null;
+            Connect.DrSql.Dispose();
+            Connect.DrSql = null;
+        }
+
+        public void search(string filtered)
+        {
+            int x = 0;
+            Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+            Connect.CnSql.Open();
+            String qryStr = "select * from view_orders where status = '"+ filtered + "'";
+
+            Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
+            Connect.DrSql = Connect.CmSql.ExecuteReader();
+            LsvOrderList.Items.Clear();
+            while (Connect.DrSql.Read())
+            {
+                try
+                {
+                    ListViewItem lvi = new ListViewItem(Connect.DrSql.GetString("order_id"));
+                    lvi.SubItems.Add(Connect.DrSql.GetString("ordered_item").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("additional_info").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("customer_name").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("status").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("contact_no").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("downpayment").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("order_price").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("store_representative").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("date_ordered").Trim());
+
+                    if (x % 2 == 1) lvi.BackColor = Color.MintCream;
+                    else
+                    {
+                        lvi.BackColor = Color.White;
+                    }
+                    x++;
+                    LsvOrderList.Items.Add(lvi);
+                }
+                catch (SqlNullValueException e)
+                {
+
+                }
+            }
+            Connect.CnSql.Close();
+            Connect.CnSql.Dispose();
+            Connect.CmSql.Dispose();
+            Connect.CmSql = null;
+            Connect.DrSql.Dispose();
+            Connect.DrSql = null;
+        }
+
+        public void searchCancelled()
+        {
+            int x = 0;
+            Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+            Connect.CnSql.Open();
+            String qryStr = "select * from view_cancelled_order";
+
+            Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
+            Connect.DrSql = Connect.CmSql.ExecuteReader();
+            LsvCancelled.Items.Clear();
+            while (Connect.DrSql.Read())
+            {
+                try
+                {
+                    ListViewItem lvi = new ListViewItem(Connect.DrSql.GetString("order_id"));
+                    lvi.SubItems.Add(Connect.DrSql.GetString("ordered_item").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("additional_info").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("customer_name").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("status").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("contact_no").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("downpayment").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("order_price").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("store_representative").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("date_ordered").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("name").Trim());
+
+
+
+                    if (x % 2 == 1) lvi.BackColor = Color.MintCream;
+                    else
+                    {
+                        lvi.BackColor = Color.White;
+                    }
+                    x++;
+                    LsvCancelled.Items.Add(lvi);
+                }
+                catch (SqlNullValueException e)
+                {
+                }
+            }
+            Connect.CnSql.Close();
+            Connect.CnSql.Dispose();
+            Connect.CmSql.Dispose();
+            Connect.CmSql = null;
+            Connect.DrSql.Dispose();
+            Connect.DrSql = null;
+        }
+
+        public Boolean removedOrder()
+        {
+            string qryStringMember;
+
+            qryStringMember = "DELETE from tbl_order WHERE order_id=@order_id";
+            try
+            {
+                Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+                Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+                Connect.CnSql.Open();
+                Connect.CmSql = new MySqlCommand(qryStringMember, Connect.CnSql);
+                Connect.CmSql.Parameters.AddWithValue("@order_id", OrderId);
+
+                Trans = Connect.CnSql.BeginTransaction();
+                Connect.CmSql.Transaction = Trans;
+                Connect.CmSql.ExecuteNonQuery();
+                Trans.Commit();
+
+                return true;
+            }
+
+            catch (MySqlException e)
+            {
+                XtraMessageBox.Show(e.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(ex.Message, "General Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+
+            }
+            finally
+            {
+                Connect.CnSql.Close();
+                Connect.CnSql.Dispose();
+                Connect.CmSql.Dispose();
+                Connect.CmSql = null;
+                Connect.DrSql = null;
+            }
+
+            return false;
+        }
 
     }
 }

@@ -28,14 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmUpdateStocks));
             this.bunifuCustomLabel1 = new Bunifu.Framework.UI.BunifuCustomLabel();
             this.label2 = new System.Windows.Forms.Label();
             this.btnUpdateStocks = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblStockinStocks = new System.Windows.Forms.Label();
             this.txtStocks = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lblStockinStocks = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -65,11 +66,14 @@
             this.btnUpdateStocks.BackColor = System.Drawing.Color.SeaGreen;
             this.btnUpdateStocks.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUpdateStocks.ForeColor = System.Drawing.Color.White;
-            this.btnUpdateStocks.Location = new System.Drawing.Point(195, 192);
+            this.btnUpdateStocks.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdateStocks.Image")));
+            this.btnUpdateStocks.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnUpdateStocks.Location = new System.Drawing.Point(187, 192);
             this.btnUpdateStocks.Name = "btnUpdateStocks";
-            this.btnUpdateStocks.Size = new System.Drawing.Size(103, 34);
+            this.btnUpdateStocks.Size = new System.Drawing.Size(111, 34);
             this.btnUpdateStocks.TabIndex = 8;
             this.btnUpdateStocks.Text = "Update";
+            this.btnUpdateStocks.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnUpdateStocks.UseVisualStyleBackColor = false;
             this.btnUpdateStocks.Click += new System.EventHandler(this.btnUpdateStocks_Click);
             // 
@@ -83,6 +87,16 @@
             this.groupBox1.Size = new System.Drawing.Size(286, 113);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
+            // 
+            // lblStockinStocks
+            // 
+            this.lblStockinStocks.AutoSize = true;
+            this.lblStockinStocks.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStockinStocks.Location = new System.Drawing.Point(183, 23);
+            this.lblStockinStocks.Name = "lblStockinStocks";
+            this.lblStockinStocks.Size = new System.Drawing.Size(36, 19);
+            this.lblStockinStocks.TabIndex = 19;
+            this.lblStockinStocks.Text = "999";
             // 
             // txtStocks
             // 
@@ -115,16 +129,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(316, 31);
             this.panel1.TabIndex = 6;
-            // 
-            // lblStockinStocks
-            // 
-            this.lblStockinStocks.AutoSize = true;
-            this.lblStockinStocks.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStockinStocks.Location = new System.Drawing.Point(183, 23);
-            this.lblStockinStocks.Name = "lblStockinStocks";
-            this.lblStockinStocks.Size = new System.Drawing.Size(36, 19);
-            this.lblStockinStocks.TabIndex = 19;
-            this.lblStockinStocks.Text = "999";
             // 
             // frmUpdateStocks
             // 

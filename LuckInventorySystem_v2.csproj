@@ -32,6 +32,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AxShockwaveFlashObjects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="Bunifu.Core, Version=1.11.5.1, Culture=neutral, PublicKeyToken=e8e24ccd28363fe9, processorArchitecture=MSIL" />
@@ -98,9 +106,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="controller\DefectiveController.cs" />
     <Compile Include="controller\ItemController.cs" />
     <Compile Include="controller\ItemStockControler.cs" />
     <Compile Include="controller\OrderController.cs" />
+    <Compile Include="controller\RepairController.cs" />
     <Compile Include="controller\SalesController.cs" />
     <Compile Include="controller\StockinController.cs" />
     <Compile Include="controller\SupplierController.cs" />
@@ -154,11 +164,41 @@
       <DependentUpon>ctrUsers.cs</DependentUpon>
     </Compile>
     <Compile Include="db\dbConnection.cs" />
+    <Compile Include="frmArchivedItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmArchivedItems.Designer.cs">
+      <DependentUpon>frmArchivedItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmArchivedSupplier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmArchivedSupplier.Designer.cs">
+      <DependentUpon>frmArchivedSupplier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmArhivedUsers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmArhivedUsers.Designer.cs">
+      <DependentUpon>frmArhivedUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDefectiveItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDefectiveItem.Designer.cs">
+      <DependentUpon>frmDefectiveItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmExchange.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmExchange.Designer.cs">
       <DependentUpon>frmExchange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLogin.Designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
     </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
@@ -190,6 +230,18 @@
     <Compile Include="frmReceipt.Designer.cs">
       <DependentUpon>frmReceipt.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmNewRepair.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNewRepair.Designer.cs">
+      <DependentUpon>frmNewRepair.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRepair.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRepair.Designer.cs">
+      <DependentUpon>frmRepair.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmStocks.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,9 +254,17 @@
     <Compile Include="frmUpdateStocks.Designer.cs">
       <DependentUpon>frmUpdateStocks.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmVerification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmVerification.Designer.cs">
+      <DependentUpon>frmVerification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="model\DefectiveModel.cs" />
     <Compile Include="model\ItemModel.cs" />
     <Compile Include="model\ItemStockModel.cs" />
     <Compile Include="model\OrderModel.cs" />
+    <Compile Include="model\RepairModel.cs" />
     <Compile Include="model\SalesModel.cs" />
     <Compile Include="model\StockinModel.cs" />
     <Compile Include="model\SupplierModel.cs" />
@@ -259,8 +319,23 @@
     <EmbeddedResource Include="ctrUsers.resx">
       <DependentUpon>ctrUsers.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmArchivedItems.resx">
+      <DependentUpon>frmArchivedItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmArchivedSupplier.resx">
+      <DependentUpon>frmArchivedSupplier.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmArhivedUsers.resx">
+      <DependentUpon>frmArhivedUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDefectiveItem.resx">
+      <DependentUpon>frmDefectiveItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmExchange.resx">
       <DependentUpon>frmExchange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
@@ -277,11 +352,20 @@
     <EmbeddedResource Include="frmReceipt.resx">
       <DependentUpon>frmReceipt.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmNewRepair.resx">
+      <DependentUpon>frmNewRepair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRepair.resx">
+      <DependentUpon>frmRepair.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmStocks.resx">
       <DependentUpon>frmStocks.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmUpdateStocks.resx">
       <DependentUpon>frmUpdateStocks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVerification.resx">
+      <DependentUpon>frmVerification.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -292,6 +376,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="rptItems.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
@@ -324,6 +409,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Vector Orange Light Abstract Background.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

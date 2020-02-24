@@ -132,7 +132,7 @@ namespace LuckInventorySystem_v2.controller
 
         }
 
-        public void DisplayArchivedSupplier()
+        public void displayArchived()
         {
             int x = 0;
             Connect.CnSql = new MySqlConnection(Connect.ConnStr);
@@ -142,17 +142,16 @@ namespace LuckInventorySystem_v2.controller
             String qryStr = "Select * from tbl_supplier where isDeleted = 0";
 
             Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql); Connect.DrSql = Connect.CmSql.ExecuteReader();
-            LsvSupplier.Items.Clear(); while (Connect.DrSql.Read())
+            LsvSupplierArchived.Items.Clear(); while (Connect.DrSql.Read())
             {
                 try
                 {
                     ListViewItem lvi = new ListViewItem(Connect.DrSql.GetInt64("supplier_id").ToString());
-                    lvi.SubItems.Add(Connect.DrSql.GetString("company_name").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("supplier_name").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("representative").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("contact").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("email").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("address").Trim());
-
 
 
                     if (x % 2 == 1) lvi.BackColor = Color.MintCream;
@@ -161,7 +160,7 @@ namespace LuckInventorySystem_v2.controller
                         lvi.BackColor = Color.White;
                     }
                     x++;
-                    LsvSupplier.Items.Add(lvi);
+                    LsvSupplierArchived.Items.Add(lvi);
                 }
                 catch (SqlNullValueException e)
                 {
@@ -382,6 +381,87 @@ namespace LuckInventorySystem_v2.controller
             Connect.DrSql = null;
 
         }
+
+
+
+
+        public void countItem()
+        {
+
+            int x = 0;
+
+            Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+            Connect.CnSql.Open();
+
+            String qryStr = "Select count(*) as NoOfItem from tbl_supplier ";
+
+            Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
+            Connect.DrSql = Connect.CmSql.ExecuteReader();
+
+            while (Connect.DrSql.Read())
+            {
+                try
+                {
+                    Count = Connect.DrSql.GetInt32("NoOfItem");
+
+                }
+                catch (SqlNullValueException e)
+                {
+
+                }
+            }
+
+            Connect.CnSql.Close();
+            Connect.CnSql.Dispose();
+            Connect.CmSql.Dispose();
+            Connect.CmSql = null;
+            Connect.DrSql.Dispose();
+            Connect.DrSql = null;
+        }
+
+        public Boolean archive()
+        {
+            string qryStringMember;
+
+            qryStringMember = "UPDATE tbl_supplier set isDeleted=@isDeleted WHERE supplier_id = @supplier_id";
+
+            try
+            {
+                Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+                Connect.CnSql.Open();
+                Connect.CmSql = new MySqlCommand(qryStringMember, Connect.CnSql);
+                Connect.CmSql.Parameters.AddWithValue("@isDeleted", IsDeleted);
+                Connect.CmSql.Parameters.AddWithValue("@supplier_id", SupplierId);
+                Trans = Connect.CnSql.BeginTransaction();
+                Connect.CmSql.Transaction = Trans;
+                Connect.CmSql.ExecuteNonQuery();
+                Trans.Commit();
+                return true;
+            }
+
+            catch (MySqlException e)
+            {
+                XtraMessageBox.Show(e.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(ex.Message, "General Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+
+            }
+            finally
+            {
+                Connect.CnSql.Close();
+                Connect.CnSql.Dispose();
+                Connect.CmSql.Dispose();
+                Connect.CmSql = null;
+                Connect.DrSql = null;
+            }
+
+            return false;
+        }
+
 
 
 

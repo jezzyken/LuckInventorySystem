@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -84,6 +86,56 @@ namespace LuckInventorySystem_v2.controller
                 Connect.DrSql = null;
             }
             return false;
+        }
+
+        public void display()
+        {
+            int x = 0;
+            Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+
+            Connect.CnSql.Open();
+
+            String qryStr = "Select * from sales_view limit 15";
+
+            Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
+            Connect.DrSql = Connect.CmSql.ExecuteReader();
+            LsvSales.Items.Clear();
+
+            while (Connect.DrSql.Read())
+            {
+                try
+                {
+                    ListViewItem lvi = new ListViewItem(Connect.DrSql.GetString("item_name"));
+                    lvi.SubItems.Add(Connect.DrSql.GetString("supplier_name").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("sold_quantity").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("brand").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("model").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("date_purchased").Trim());
+
+                    if (x % 2 == 1)
+                    {
+                        lvi.BackColor = Color.MintCream;
+                    }
+                    else
+                    {
+                        lvi.BackColor = Color.White;
+                    }
+
+                    x++;
+                    LsvSales.Items.Add(lvi);
+                }
+                catch (SqlNullValueException e)
+                {
+
+                }
+            }
+            Connect.CnSql.Close();
+            Connect.CnSql.Dispose();
+            Connect.CmSql.Dispose();
+            Connect.CmSql = null;
+            Connect.DrSql.Dispose();
+            Connect.DrSql = null;
+
         }
 
 

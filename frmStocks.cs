@@ -49,7 +49,10 @@ namespace LuckInventorySystem_v2
             _itemController.ItemId = item_id;
             _itemController.Stocks = total_remaining_stocks;
             _itemController.updateStocks();
+            MessageBox.Show("Stocks Added");
             _itemController.display();
+            _itemController.displayStocks();
+            this.Close();
 
         }
     }

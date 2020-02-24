@@ -166,6 +166,7 @@ namespace LuckInventorySystem_v2.controller
                     lvi.SubItems.Add(Connect.DrSql.GetString("contact_no").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("email").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("username").Trim());
+                    lvi.SubItems.Add(Connect.DrSql.GetString("password").Trim());
                     lvi.SubItems.Add(Connect.DrSql.GetString("user_level").Trim());
 
                     if (x % 2 == 1) lvi.BackColor = Color.MintCream;
@@ -190,7 +191,7 @@ namespace LuckInventorySystem_v2.controller
 
         }
 
-        public void DisplayArchivedUser()
+        public void displayArchived()
         {
             int x = 0;
             Connect.CnSql = new MySqlConnection(Connect.ConnStr);
@@ -201,7 +202,7 @@ namespace LuckInventorySystem_v2.controller
 
             Connect.CmSql = new MySqlCommand(qryStr, Connect.CnSql);
             Connect.DrSql = Connect.CmSql.ExecuteReader();
-            LsvUser.Items.Clear();
+            LsvUserAchived.Items.Clear();
             while (Connect.DrSql.Read())
             {
                 try
@@ -219,7 +220,7 @@ namespace LuckInventorySystem_v2.controller
                         lvi.BackColor = Color.White;
                     }
                     x++;
-                    LsvUser.Items.Add(lvi);
+                    LsvUserAchived.Items.Add(lvi);
                 }
                 catch (SqlNullValueException e)
                 {
@@ -449,6 +450,225 @@ namespace LuckInventorySystem_v2.controller
             Connect.CmSql = null;
             Connect.DrSql.Dispose();
             Connect.DrSql = null;
+        }
+
+        public Boolean Login()
+        {
+            string queryString;
+
+            queryString = "select * from tbl_users where username=@username and password=@password and user_level=@user_level and isDeleted = 1 ";
+
+            try
+            {
+                Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+                Connect.CnSql.Open();
+                Connect.CmSql = new MySqlCommand(queryString, Connect.CnSql);
+                Connect.CmSql.Parameters.AddWithValue("@username", Username);
+                Connect.CmSql.Parameters.AddWithValue("@password", Password);
+                Connect.CmSql.Parameters.AddWithValue("@user_level", UserLevel);
+
+                Connect.DrSql = Connect.CmSql.ExecuteReader();
+
+                if (Connect.DrSql.Read())
+                {
+                    UserId = Connect.DrSql.GetInt32("user_id");
+                    Username = Connect.DrSql.GetString("username");
+                    Password = Connect.DrSql.GetString("password");
+                    Name = Connect.DrSql.GetString("name");
+                    UserLevel = Connect.DrSql.GetString("user_level");
+                    return true;
+                }
+            }
+            catch (MySqlException e)
+            {
+
+                XtraMessageBox.Show(e.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(ex.Message, "General Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                Connect.CnSql.Close();
+                Connect.CnSql.Dispose();
+
+                Connect.CmSql.Dispose();
+                Connect.CmSql = null;
+
+                Connect.DrSql = null;
+            }
+            return false;
+        }
+
+
+        public Boolean verify()
+        {
+            string queryString;
+
+            queryString = "select * from tbl_users where username=@username and password=@password and isDeleted = 1 ";
+
+            try
+            {
+                Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+                Connect.CnSql.Open();
+                Connect.CmSql = new MySqlCommand(queryString, Connect.CnSql);
+                Connect.CmSql.Parameters.AddWithValue("@username", Username);
+                Connect.CmSql.Parameters.AddWithValue("@password", Password);
+
+                Connect.DrSql = Connect.CmSql.ExecuteReader();
+
+                if (Connect.DrSql.Read())
+                {
+                    UserId = Connect.DrSql.GetInt32("user_id");
+                    return true;
+                }
+            }
+            catch (MySqlException e)
+            {
+
+                XtraMessageBox.Show(e.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(ex.Message, "General Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                Connect.CnSql.Close();
+                Connect.CnSql.Dispose();
+
+                Connect.CmSql.Dispose();
+                Connect.CmSql = null;
+
+                Connect.DrSql = null;
+            }
+            return false;
+        }
+
+        public Boolean archive()
+        {
+            string qryStringMember;
+
+            qryStringMember = "UPDATE tbl_users set isDeleted=@isDeleted WHERE item_id = @item_id";
+
+            try
+            {
+                Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+                Connect.CnSql.Open();
+                Connect.CmSql = new MySqlCommand(qryStringMember, Connect.CnSql);
+                Connect.CmSql.Parameters.AddWithValue("@isDeleted", IsDeleted);
+                Connect.CmSql.Parameters.AddWithValue("@user_id", UserId);
+                Trans = Connect.CnSql.BeginTransaction();
+                Connect.CmSql.Transaction = Trans;
+                Connect.CmSql.ExecuteNonQuery();
+                Trans.Commit();
+                return true;
+            }
+
+            catch (MySqlException e)
+            {
+                XtraMessageBox.Show(e.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(ex.Message, "General Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+
+            }
+            finally
+            {
+                Connect.CnSql.Close();
+                Connect.CnSql.Dispose();
+                Connect.CmSql.Dispose();
+                Connect.CmSql = null;
+                Connect.DrSql = null;
+            }
+
+            return false;
+        }
+
+        public Boolean restore()
+        {
+            string qryStringMember;
+
+            qryStringMember = "UPDATE tbl_users set isDeleted=@isDeleted WHERE item_id = @item_id";
+
+            try
+            {
+                Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+                Connect.CnSql.Open();
+                Connect.CmSql = new MySqlCommand(qryStringMember, Connect.CnSql);
+                Connect.CmSql.Parameters.AddWithValue("@isDeleted", IsDeleted);
+                Connect.CmSql.Parameters.AddWithValue("@user_id", UserId);
+                Trans = Connect.CnSql.BeginTransaction();
+                Connect.CmSql.Transaction = Trans;
+                Connect.CmSql.ExecuteNonQuery();
+                Trans.Commit();
+                return true;
+            }
+
+            catch (MySqlException e)
+            {
+                XtraMessageBox.Show(e.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(ex.Message, "General Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+
+            }
+            finally
+            {
+                Connect.CnSql.Close();
+                Connect.CnSql.Dispose();
+                Connect.CmSql.Dispose();
+                Connect.CmSql = null;
+                Connect.DrSql = null;
+            }
+
+            return false;
+        }
+
+        public Boolean truncate()
+        {
+            string qryStringMember;
+
+            qryStringMember = "TRUNCATE TABLE tbl_logs";
+
+            try
+            {
+                Connect.CnSql = new MySqlConnection(Connect.ConnStr);
+                Connect.CnSql.Open();
+                Connect.CmSql = new MySqlCommand(qryStringMember, Connect.CnSql);
+                Connect.CmSql.ExecuteNonQuery();
+                Trans.Commit();
+                return true;
+            }
+
+            catch (MySqlException e)
+            {
+                XtraMessageBox.Show(e.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show(ex.Message, "General Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Trans.Rollback();
+
+            }
+            finally
+            {
+                Connect.CnSql.Close();
+                Connect.CnSql.Dispose();
+                Connect.CmSql.Dispose();
+                Connect.CmSql = null;
+                Connect.DrSql = null;
+            }
+
+            return false;
         }
 
     }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 using LuckInventorySystem_v2.controller;
 
 namespace LuckInventorySystem_v2
@@ -63,8 +64,13 @@ namespace LuckInventorySystem_v2
                 _itemController.SellingPrice = double.Parse(txtSellingPrice.Text);
                 _itemController.WholesalePrice = double.Parse(txtWholesalePrice.Text);
                 _itemController.ItemNote = txtNote.Text;
+
                 _itemController.update();
+                MessageBox.Show("Updated");
                 _itemController.display();
+                clear();
+
+
             }
             else
             {
@@ -80,10 +86,22 @@ namespace LuckInventorySystem_v2
                 _itemController.SellingPrice = double.Parse(txtSellingPrice.Text);
                 _itemController.WholesalePrice = double.Parse(txtWholesalePrice.Text);
                 _itemController.ItemNote = txtNote.Text;
-                _itemController.add();
-                _itemController.display();
-                //_itemController.getItemId(txtItemName.Text, supplier_id, CBoCategory.Text, txtBrand.Text, txtModel.Text, double.Parse(txtSellingPrice.Text), double.Parse(txtWholesalePrice.Text));
-                //MessageBox.Show(_itemController.ItemId + "");
+
+
+                _itemController.checkItem(txtItemName.Text, supplier_id, CBoCategory.Text, txtBrand.Text, txtModel.Text, double.Parse(txtSellingPrice.Text), double.Parse(txtWholesalePrice.Text));
+
+                if (_itemController.Count >= 1)
+                {
+                    MessageBox.Show("item Already Exist!");
+                }
+                else
+                {
+                    _itemController.add();
+                    MessageBox.Show("Added");
+                    _itemController.display();
+                    clear();
+                }
+              
             }
         }
 
@@ -122,7 +140,7 @@ namespace LuckInventorySystem_v2
             }
             else
             {
-                btnSave.Text = "Add";
+                btnSave.Text = "Save";
             }
 
         }
@@ -142,6 +160,74 @@ namespace LuckInventorySystem_v2
             item_id = "Item" + strId;
 
             return "TransNo" + strId;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            clear();
+        }
+
+        public void clear()
+        {
+            txtItemName.Text = "";
+            txtBrand.Text = "";
+            txtModel.Text = "";
+            txtNote.Text = "";
+            txtSellingPrice.Text = "";
+            txtWholesalePrice.Text = "";
+            txtDescription.Text = "";
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult;
+
+            if (LsvItem.SelectedItems.Count == 0)
+            {
+                XtraMessageBox.Show("Please Select Item",
+                    "Nothing Selected",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            else
+            {
+                dialogResult = XtraMessageBox.Show("Do you want to archived this Item?",
+                  "Updating...",
+                  MessageBoxButtons.OKCancel,
+                  MessageBoxIcon.Question);
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    _itemController.IsDeleted = 0;
+                    _itemController.ItemId = item_id;
+                    _itemController.archive();
+
+                    XtraMessageBox.Show("Succesfully Updated",
+                        "Success",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    _itemController.display();
+
+                }
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            new frmArchivedItems().ShowDialog();
+        }
+
+        private void bunifuTextBox2_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                _itemController.search(txtSearch.Text);
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            
         }
     }
 }

@@ -49,6 +49,7 @@ namespace LuckInventorySystem_v2
                 _orderController.StoreRepresentative = txtStoreRepresentative.Text;
                 _orderController.add();
                 _orderController.display();
+                this.Close();
             }
             else
             {
@@ -61,8 +62,10 @@ namespace LuckInventorySystem_v2
                 _orderController.OrderPrice = double.Parse(txtOrderPrice.Text);
                 _orderController.update();
                 _orderController.display();
+                this.Close();
+
             }
-         
+
 
         }
 
@@ -76,10 +79,6 @@ namespace LuckInventorySystem_v2
             txtDownpayment.Text = downpayment.ToString();
             txtOrderPrice.Text = order_price.ToString();
             txtStoreRepresentative.Text = store_representative;
-
-
-            MessageBox.Show(state);
-
         }
     }
 }

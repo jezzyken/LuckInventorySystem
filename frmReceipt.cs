@@ -29,7 +29,9 @@ namespace LuckInventorySystem_v2
         {
             try
             {
-                cryRpt.Load("C:\\Users\\YouJezzy\\Documents\\Visual Studio 2015\\Projects\\LuckInventorySystem_v2\\LuckInventorySystem_v2\\rptReciept.rpt");
+                cryRpt.Load(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, System.AppDomain.CurrentDomain.RelativeSearchPath ?? "rptReciept.rpt"));
+
+               // cryRpt.Load("C:\\Users\\YouJezzy\\Documents\\Visual Studio 2015\\Projects\\LuckInventorySystem_v2\\LuckInventorySystem_v2\\rptReciept.rpt");
 
                 ParameterFieldDefinitions crParameterFieldDefinitions;
                 ParameterFieldDefinition crParameterFieldDefinition;
@@ -53,6 +55,8 @@ namespace LuckInventorySystem_v2
                 MessageBox.Show(ex.Message);
             }
         }
+
+
 
     }
 }

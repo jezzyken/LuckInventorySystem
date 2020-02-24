@@ -56,7 +56,9 @@ namespace LuckInventorySystem_v2
             total_stocks = _itemController.Stocks;
             _itemController.Stocks = (total_stocks - int.Parse(lblStockinStocks.Text)) + int.Parse(txtStocks.Text);
             _itemController.updateStocks();
+            MessageBox.Show("Stocks Updated");
             _itemController.display();
+            this.Close();
 
         }
     }

@@ -19,9 +19,9 @@ namespace LuckInventorySystem_v2
         {
             InitializeComponent();
 
-            cryRpt.Load("C:\\Users\\YouJezzy\\Documents\\Visual Studio 2015\\Projects\\LuckInventorySystem_v2\\LuckInventorySystem_v2\\rptItems.rpt");
+           // cryRpt.Load("C:\\Users\\YouJezzy\\Documents\\Visual Studio 2015\\Projects\\LuckInventorySystem_v2\\LuckInventorySystem_v2\\rptItems.rpt");
 
-            //cryRpt.Load(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, System.AppDomain.CurrentDomain.RelativeSearchPath ?? "rptSalesReport.rpt"));
+            cryRpt.Load(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, System.AppDomain.CurrentDomain.RelativeSearchPath ?? "rptItems.rpt"));
 
             crystalReportViewer1.ReportSource = cryRpt;
             crystalReportViewer1.Refresh();

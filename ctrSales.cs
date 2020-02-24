@@ -60,12 +60,19 @@ namespace LuckInventorySystem_v2
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+
+
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
             try
             {
 
-                cryRpt.Load("C:\\Users\\YouJezzy\\documents\\visual studio 2015\\Projects\\LuckInventorySystem_v2\\LuckInventorySystem_v2\\rptSales.rpt");
+                //cryRpt.Load("C:\\Users\\YouJezzy\\documents\\visual studio 2015\\Projects\\LuckInventorySystem_v2\\LuckInventorySystem_v2\\rptSales.rpt");
 
-                //cryRpt.Load(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, System.AppDomain.CurrentDomain.RelativeSearchPath ?? "rptSalesReport.rpt"));
+                cryRpt.Load(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, System.AppDomain.CurrentDomain.RelativeSearchPath ?? "rptSales.rpt"));
 
                 datefrom();
                 dateto();
@@ -77,9 +84,6 @@ namespace LuckInventorySystem_v2
             {
                 MessageBox.Show(ex.Message);
             }
-
-
-
         }
     }
 }

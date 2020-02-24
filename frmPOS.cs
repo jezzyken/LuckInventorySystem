@@ -17,6 +17,7 @@ namespace LuckInventorySystem_v2
     {
         ItemController _itemController = ItemController.GetInstance;
         SalesController _salesController = SalesController.GetInstance;
+        private UserController _userController = UserController.GetInstance;
 
         private int _userRowIndex;
         private int _userRowIndex1;
@@ -39,10 +40,18 @@ namespace LuckInventorySystem_v2
 
         Boolean checkDiscount = false;
 
+
+        public string name { get; set; }
+        public int user_id { get; set; }
+
         public frmPOS()
         {
             InitializeComponent();
+  
+            _userController.GetImage(user_id);
+            _userController.UserImage = userImage;
             timer1.Start();
+
         }
 
         private void frmPOS_Load(object sender, EventArgs e)
@@ -91,70 +100,96 @@ namespace LuckInventorySystem_v2
         private void button1_Click(object sender, EventArgs e)
         {
 
-            int quantity = int.Parse(txtQty.Text);
-            double total_price = quantity * double.Parse(lblPrice.Text);
-
-            ListViewItem item = new ListViewItem();
-            item.Text = lblItemId.Text;
-            item.SubItems.Add(lblItem.Text);
-            item.SubItems.Add(lblPrice.Text); // price 2
-            item.SubItems.Add(quantity.ToString()); //quantity 3
-            item.SubItems.Add(total_price.ToString(format)); //total 4
-
-            if (int.Parse(txtQty.Text) > int.Parse(lblStocks.Text))
+            try
             {
-                MessageBox.Show("Not Enough Stocks");
-            }
-            else
-            {
-                if (LsvPurchased.FindItemWithText(lblItemId.Text) == null)
+
+
+                int quantity = int.Parse(txtQty.Text);
+                double total_price = quantity*double.Parse(lblPrice.Text);
+
+                ListViewItem item = new ListViewItem();
+                item.Text = lblItemId.Text;
+                item.SubItems.Add(lblItem.Text);
+                item.SubItems.Add(lblPrice.Text); // price 2
+                item.SubItems.Add(quantity.ToString()); //quantity 3
+                item.SubItems.Add(total_price.ToString(format)); //total 4
+
+                if (int.Parse(txtQty.Text) > int.Parse(lblStocks.Text))
                 {
-                    LsvPurchased.Items.Add(item);
+                    MessageBox.Show("Not Enough Stocks");
                 }
                 else
                 {
-                    foreach (ListViewItem i in LsvPurchased.Items)
+                    if (LsvPurchased.FindItemWithText(lblItemId.Text) == null)
                     {
-                        if (i.SubItems[0].Text == lblItemId.Text)
+                        if (int.Parse(txtQty.Text) == 0)
                         {
-                            //Add Quantity
-                            i.SubItems[3].Text =
-                                Convert.ToString(Convert.ToInt32(quantity) +
-                                                 Convert.ToInt32(i.SubItems[3].Text));
+                            MessageBox.Show("Please add stock");
+                        }
+                        else
+                        {
+                            LsvPurchased.Items.Add(item);
+                        }
 
-                            if (int.Parse(i.SubItems[3].Text) > int.Parse(lblStocks.Text))
+                    }
+                    else
+                    {
+                        foreach (ListViewItem i in LsvPurchased.Items)
+                        {
+                            if (i.SubItems[0].Text == lblItemId.Text)
                             {
 
-                                i.SubItems[3].Text = lblStocks.Text;
+                                if (int.Parse(txtQty.Text) == 0)
+                                {
+                                    MessageBox.Show("Please add stock");
+                                }
+                                else
+                                {
+                                    //Add Quantity
+                                    i.SubItems[3].Text =
+                                        Convert.ToString(Convert.ToInt32(quantity) +
+                                                         Convert.ToInt32(i.SubItems[3].Text));
 
-                                MessageBox.Show("Not Enought Stocks");
+                                    if (int.Parse(i.SubItems[3].Text) > int.Parse(lblStocks.Text))
+                                    {
 
-                                //multiply quantity to item price
-                                i.SubItems[4].Text = Convert.ToString(Convert.ToInt32(i.SubItems[2].Text) *
-                                                                      Convert.ToInt32(i.SubItems[3].Text));
-                            }
-                            else
-                            {
-                                //multiply quantity to item price
-                                i.SubItems[4].Text = Convert.ToString(Convert.ToInt32(i.SubItems[2].Text) *
-                                                                      Convert.ToInt32(i.SubItems[3].Text));
+                                        i.SubItems[3].Text = lblStocks.Text;
+
+                                        MessageBox.Show("Not Enought Stocks");
+
+                                        //multiply quantity to item price
+                                        i.SubItems[4].Text = Convert.ToString(Convert.ToInt32(i.SubItems[2].Text) *
+                                                                              Convert.ToInt32(i.SubItems[3].Text));
+                                    }
+                                    else
+                                    {
+                                        //multiply quantity to item price
+                                        i.SubItems[4].Text = Convert.ToString(Convert.ToInt32(i.SubItems[2].Text) *
+                                                                              Convert.ToInt32(i.SubItems[3].Text));
+                                    }
+                                }
+                               
                             }
                         }
                     }
+
+                    gtotal = 0;
+
+                    foreach (ListViewItem lstItem in LsvPurchased.Items)
+                    {
+                        gtotal += double.Parse(lstItem.SubItems[4].Text);
+                    }
                 }
 
-                gtotal = 0;
+                txtTotal.Text = gtotal.ToString(format);
+                chkDiscount.Checked = false;
+                clear();
 
-                foreach (ListViewItem lstItem in LsvPurchased.Items)
-                {
-                    gtotal += double.Parse(lstItem.SubItems[4].Text);
-                }
             }
-
-            txtTotal.Text = gtotal.ToString(format);
-
-            chkDiscount.Checked = false;
-            clear();
+            catch (Exception ex)
+            {
+                
+            }
 
         }
 
@@ -181,13 +216,22 @@ namespace LuckInventorySystem_v2
 
         private void txtDiscount_TextChanged(object sender, EventArgs e)
         {
-            if (checkDiscount)
+            try
             {
-                clear();
-                txtDiscount.Enabled = true;
-                discount = gtotal - double.Parse(txtDiscount.Text);
-                txtTotal.Text = discount.ToString(format);
+                if (checkDiscount)
+                {
+                    clear();
+                    txtDiscount.Enabled = true;
+                    discount = gtotal - double.Parse(txtDiscount.Text);
+                    txtTotal.Text = discount.ToString(format);
+                }
+
             }
+            catch (Exception ex)
+            {
+               
+            }
+           
         }
 
         private void txtAmount_TextChanged(object sender, EventArgs e)
@@ -233,6 +277,9 @@ namespace LuckInventorySystem_v2
 
         private void btnProcess_Click(object sender, EventArgs e)
         {
+
+         
+
             DialogResult dialogResult;
             int number_of_item;
 
@@ -260,12 +307,12 @@ namespace LuckInventorySystem_v2
                         {
                             discount = double.Parse(txtDiscount.Text) / number_of_item;
                         }
-                         
+
                         _salesController.ItemId = item.Text;
                         _salesController.SoldQuantity = item.SubItems[3].Text;
                         _salesController.Discount = discount;
                         _salesController.TranxNo = tranx_no;
-                        _salesController.UserId = 1;
+                        _salesController.UserId = user_id;
                         _salesController.add();
 
                         _itemController.ItemId = item.Text;
@@ -275,7 +322,7 @@ namespace LuckInventorySystem_v2
                         _itemController.display();
                     }
 
-                    XtraMessageBox.Show("Transaction Complete " ,
+                    XtraMessageBox.Show("Transaction Complete ",
                         "Sucess",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
@@ -298,11 +345,13 @@ namespace LuckInventorySystem_v2
                     MessageBox.Show(ex.Message);
                 }
             }
+
+
         }
 
         public string generateTranxNo()
         {
-            string strTranx = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+{}:<>?+-";
+            string strTranx = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZa1Ab2BC3cD4dE5eF6f7Gg8Hh9Ii10Jj0Kk1Ll2M3nO4oP5pQ6qR7rS8sT9tU0uV1vW2wX3xY4yZ5z";
             string strTranxNo = "";
 
             Random rnd = new Random();
@@ -348,7 +397,62 @@ namespace LuckInventorySystem_v2
         private void button10_Click(object sender, EventArgs e)
         {
             this.Hide();
-            new frmMain().Show();
+            new frmLogin().Show();
+        }
+
+        private void frmPOS_Shown(object sender, EventArgs e)
+        {
+            txtName.Text = name;
+            _userController.GetImage(user_id);
+            _userController.UserImage = userImage;
+        }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            new frmRepair().ShowDialog();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            new frmDefectiveItem().ShowDialog();
+        }
+
+        private void chkDiscount_EnabledChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+            if (LsvPurchased.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select item to be removed");
+            }
+            else
+            {
+                LsvPurchased.SelectedItems[0].Remove();
+
+                string format = "#,##0.00;-$#,##0.00;Zero";
+                gtotal = 0;
+                foreach (ListViewItem lstItem in LsvPurchased.Items)
+                {
+                    gtotal = double.Parse(lstItem.SubItems[4].Text) - gtotal;
+                }
+
+                txtTotal.Text = gtotal.ToString(format);
+            }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                _itemController.search(txtSearch.Text);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
